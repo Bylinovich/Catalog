@@ -15,7 +15,8 @@ public class Delete extends BaseHttpServlet {
     protected void process(HttpServletRequest request, HttpServletResponse response) {
         response.setStatus(200);
         DataManager dm = new DataManager();
-        dm.delete(request);
+        String id = request.getParameter("id");
+        dm.delete(id);
         try {
             response.sendRedirect("index.jsp");
         } catch (IOException e) {

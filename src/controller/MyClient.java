@@ -1,10 +1,12 @@
 package controller;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.*;
+import models.Car;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 
 /**
@@ -19,7 +21,7 @@ public class MyClient {
     private Statement stmt;
     private ResultSet resultSet;
 
-    public MyClient() throws IOException, SQLException, ClassNotFoundException {
+    public MyClient(){
         try {
             Class.forName(driverPath);
         } catch (ClassNotFoundException e) {
@@ -33,38 +35,88 @@ public class MyClient {
         }
     }
 
-    public ResultSet Select(String query){
+    private Car convertToCar(ResultSet set){
         try {
-            resultSet = stmt.executeQuery(query);
+            Car c=new Car();
+            c.setId(set.getInt("id"));
+            c.setCarMark(set.getString("carMark"));
+            c.setCarModel(set.getString("carModel"));
+            c.setYear(set.getInt("year"));
+            c.setColor(set.getString("color"));
+            return c;
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        return resultSet;
-    }
-
-    public void Insert(String query){
-        try {
-            int i=stmt.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return null;
         }
     }
 
-    public void Update(String query){
+
+    private ArrayList convertToList(ResultSet set) throws SQLException{
+        ArrayList<Car> arrayList=new ArrayList<Car>();
         try {
-            int i = stmt.executeUpdate(query);
+            while (set.next()) {
+                Car c=convertToCar(set);
+                arrayList.add(c);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return arrayList;
+    }
+
+
+    public Car Select(String id){
+        try {
+            resultSet = stmt.executeQuery("Select * from cars where id = '" + id + "'");
+            return (Car) convertToList(resultSet).get(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public ArrayList Select(){
+        try {
+            resultSet = stmt.executeQuery("SELECT * from cars");
+            return convertToList(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public void Insert(Car car){
+        try {
+            int i=stmt.executeUpdate("update cars set carMark='" +car.getCarMark() + "', carModel='" +
+                    car.getCarModel()+"', year='"+car.getYear()+"', color='" + car.getColor() +
+                    "' where id =" + car.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void Delete(String query){
+
+    public void Update(Car car){
         try {
-            int i = stmt.executeUpdate(query);
+            int i = stmt.executeUpdate("update cars set carMark='" +car.getCarMark() + "', carModel='" +
+                    car.getCarModel()+"', year='"+car.getYear()+"', color='" + car.getColor() +
+                    "' where id =" + car.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+
+    public void Delete(String id){
+        try {
+            int i = stmt.executeUpdate("delete from cars where id=" + id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public void finalize(){
         try {
@@ -82,8 +134,5 @@ public class MyClient {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
-
-
 }
