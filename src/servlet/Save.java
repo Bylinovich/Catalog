@@ -1,35 +1,19 @@
-package Servlets;
+package servlet;
 
-import BusinessLayer.DataManager;
+import controller.DataManager;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
 
 /**
  * Created by Влад on 24.10.2016.
  */
 @WebServlet("/save")
-public class Save extends HttpServlet {
+public class Save extends BaseHttpServlet {
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        this.process(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        this.process(request, response);
-    }
-
-
-    private void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void process(HttpServletRequest request, HttpServletResponse response){
         response.setStatus(200);
         DataManager dm = new DataManager();
         String act = request.getParameter("add");
@@ -41,12 +25,15 @@ public class Save extends HttpServlet {
 //            } catch (ServletException e) {
 //                e.printStackTrace();
 //            }
-            response.sendRedirect("index.jsp");
         }
         act = request.getParameter("edit");
         if (act != null) {
             dm.update(request);
+        }
+        try {
             response.sendRedirect("index.jsp");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

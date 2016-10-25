@@ -1,7 +1,6 @@
-package BusinessLayer;
+package controller;
 
-import JDBCClient.MyClient;
-import Model.Car;
+import models.Car;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;

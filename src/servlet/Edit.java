@@ -1,32 +1,20 @@
-package Servlets;
+package servlet;
 
-import BusinessLayer.DataManager;
-import Model.Car;
+import controller.DataManager;
+import models.Car;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * Created by Влад on 24.10.2016.
  */
 @WebServlet("/edit")
-public class Edit extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        this.process(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        this.process(request, response);
-    }
+public class Edit extends BaseHttpServlet {
 
     private void setAttributes(HttpServletRequest request, Car car)
     {
@@ -38,7 +26,7 @@ public class Edit extends HttpServlet {
         request.setAttribute("buttonName", "edit");
     }
 
-    private void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void process(HttpServletRequest request, HttpServletResponse response) {
         response.setStatus(200);
         DataManager dm = new DataManager();
         Car car = dm.getRecord(request.getParameter("id"));
@@ -47,7 +35,7 @@ public class Edit extends HttpServlet {
         RequestDispatcher rd = request.getRequestDispatcher("record.jsp");
         try {
             rd.forward(request, response);
-        } catch (ServletException e) {
+        } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
     }

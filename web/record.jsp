@@ -5,7 +5,7 @@
   Time: 14:53
   To change this template use File | Settings | File Templates.
 --%>
-<%@page import="Model.Car"%>
+<%@page import="models.Car"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -21,11 +21,11 @@
     <table border = "1">
 
         <tr>
-            <td>Car Mark</td>
+            <td>Mark</td>
             <td><input type = text name = "carMark" value="${carMark}" size = "70"/></td>
         </tr>
         <tr>
-            <td>Car Model</td>
+            <td>Model</td>
             <td><input type = text name = "carModel" value="${carModel}" size = "70"/></td>
         </tr>
         <tr>

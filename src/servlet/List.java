@@ -1,17 +1,13 @@
-package Servlets;
+package servlet;
 
-import BusinessLayer.DataManager;
-import Model.Car;
+import controller.DataManager;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -19,24 +15,14 @@ import java.util.ArrayList;
  */
 
 @WebServlet("/list")
-public class List extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        this.process(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        this.process(request, response);
-    }
+public class List extends BaseHttpServlet {
 
     private void setAttributes(HttpServletRequest request, ArrayList listResult)
     {
         request.setAttribute("listResult", listResult);
     }
 
-    private void process(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void process(HttpServletRequest request, HttpServletResponse response){
         response.setStatus(200);
 
         response.setContentType("text/plain");
@@ -47,7 +33,7 @@ public class List extends HttpServlet {
         try {
             RequestDispatcher rd = request.getRequestDispatcher("table.jsp");
             rd.forward(request, response);
-        } catch (ServletException e) {
+        } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
 
