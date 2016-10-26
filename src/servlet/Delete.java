@@ -1,6 +1,7 @@
 package servlet;
 
 import controller.DataManager;
+import models.User;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,16 @@ import java.io.IOException;
 @WebServlet("/delete")
 public class Delete extends BaseHttpServlet {
     protected void process(HttpServletRequest request, HttpServletResponse response) {
+        User us = (User) request.getSession().getAttribute("user");
+        if (us.getPrivilegeLevel()>0)
+        {
+            try {
+                response.sendError(404);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
         response.setStatus(200);
         DataManager dm = new DataManager();
         String id = request.getParameter("id");

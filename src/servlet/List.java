@@ -1,6 +1,7 @@
 package servlet;
 
 import controller.DataManager;
+import models.User;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,7 +25,14 @@ public class List extends BaseHttpServlet {
 
     protected void process(HttpServletRequest request, HttpServletResponse response){
         response.setStatus(200);
-
+        User user = (User) request.getSession().getAttribute("user");
+        if (user == null)
+        {
+            user = new User();
+            user.setPrivilegeLevel(4);
+            user.setLogin("Guest");
+            request.getSession().setAttribute("user", user);
+        }
         response.setContentType("text/plain");
 
         DataManager dm = new DataManager();

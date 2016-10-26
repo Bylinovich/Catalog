@@ -89,9 +89,9 @@ public class MyClient {
 
     public void Insert(Car car){
         try {
-            int i=stmt.executeUpdate("update cars set carMark='" +car.getCarMark() + "', carModel='" +
-                    car.getCarModel()+"', year='"+car.getYear()+"', color='" + car.getColor() +
-                    "' where id =" + car.getId());
+            int i=stmt.executeUpdate("insert into cars(carmark, carmodel, year, color) " +
+                    "values('"+car.getCarMark()+"','"+car.getCarModel()+"','"+
+                    car.getYear()+"','" + car.getColor() +"')");
         } catch (SQLException e) {
             e.printStackTrace();
         }
